@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Daftar Pasien</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<style>
+    * {
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+        font-size: 13px;
+    }
+
+    body {
+        margin: 0;
+        background: #f2f2f2;
+    }
+
+    .app {
+        background: #fff;
+        min-height: 100vh;
+    }
+
+
+    /* ===== HEADER HITAM ===== */
+    .header-top {
+        background: #2b2b2b;
+        color: white;
+        padding: 6px 10px;
+    }
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .menu-stack {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .menu {
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    .btn-back {
+        background: #1f1f1f;
+        color: white;
+        border: 1px solid #555;
+        padding: 2px 6px;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    .logo-text {
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    .m-red {
+        color: red;
+    }
+
+    .logo-sub {
+        font-size: 11px;
+        color: #ccc;
+    }
+
+    /* ===== HEADER BIRU ===== */
+    .header-title {
+        background: #6ea3e2;
+        color: white;
+        padding: 6px 12px;
+        font-weight: bold;
+    }
+
+    /* FILTER */
+    .filter-box {
+        padding: 10px;
+        background: #e9e9e9;
+    }
+
+    .filter-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: end;
+    }
+
+    .filter-item {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .filter-item input,
+    .filter-item select {
+        padding: 4px;
+        border: 1px solid #999;
+        border-radius: 3px;
+    }
+
+    .checkbox {
+        margin-left: 10px;
+    }
+
+    .btn-refresh {
+        padding: 6px 10px;
+        border: none;
+        background: #333;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .btn-export {
+        text-decoration: none;
+        margin-top: 8px;
+        background: #444;
+        color: #fff;
+        border: none;
+        padding: 6px 10px;
+        cursor: pointer;
+    }
+
+    /* TABLE */
+    .table-box {
+        margin: 10px;
+        border: 1px solid #555;
+    }
+
+    .table-title {
+        background: #3a3a3a;
+        color: #fff;
+        padding: 5px 8px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    thead {
+        background: #2e2e2e;
+        color: #fff;
+    }
+
+    th,
+    td {
+        padding: 6px;
+        border: 1px solid #666;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    tbody tr {
+        background: #d7d2b8;
+    }
+
+    tbody tr.active {
+        background: #6aff4f;
+        font-weight: bold;
+    }
+
+    /* FOOTER BUTTON */
+    .footer-btn {
+        display: flex;
+        justify-content: flex-start;
+        /* KIRI */
+        gap: 10px;
+        padding: 10px 0 14px 14px;
+        /* kiri agak masuk kaya gambar */
+    }
+
+    .footer-btn .btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        font-size: 12px;
+        font-weight: 500;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .footer-btn .btn i {
+        font-size: 13px;
+    }
+
+    /* WARNA BIRU TRANSMEDIC */
+    .btn.blue {
+        text-decoration: none;
+        background: #4a90e2;
+        color: #fff;
+    }
+
+    .btn.blue:hover {
+        background: #3c7dc4;
+    }
+
+
+    .pagination {
+        display: flex;
+        justify-content: flex-start;
+        gap: 4px;
+        padding: 6px;
+        background: #3a3a3a;
+    }
+
+    .pagination button {
+        border: 1px solid #666;
+        background: #e6e6e6;
+        padding: 3px 8px;
+        cursor: pointer;
+        font-size: 12px;
+    }
+
+    .pagination button.active {
+        background: #1f5fbf;
+        color: white;
+        font-weight: bold;
+    }
+
+
+    .table-top {
+        padding: 6px;
+        background: #3a3a3a;
+        border-bottom: 1px solid #555;
+    }
+
+    .btn-export {
+        background: #1f1f1f;
+        color: #fff;
+        border: 1px solid #666;
+        padding: 4px 10px;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    .table-scroll {
+        max-height: 200px;
+        /* tinggi area tabel */
+        overflow-y: auto;
+        /* scroll bawah */
+        overflow-x: auto;
+        /* scroll samping */
+        border: 1px solid #555;
+    }
+
+    thead th {
+        position: sticky;
+        top: 0;
+        background: #2e2e2e;
+        color: white;
+        z-index: 5;
+    }
+
+    tbody tr {
+        background: #d7d2b8;
+    }
+
+    tbody tr.active {
+        background: #6aff4f;
+        font-weight: bold;
+    }
+
+    tbody tr:hover {
+        background: #b5f0a5;
+        cursor: pointer;
+    }
+
+    /* WRAPPER */
+    .select-wrapper {
+        position: relative;
+        width: 110px;
+    }
+
+    /* SELECT */
+    .select-wrapper select {
+        width: 100%;
+        padding: 2px 28px 2px 6px;
+        /* space buat arrow */
+        font-size: 12px;
+        border: 1px solid #777;
+        background: white;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+    }
+
+    /* ARROW BIRU */
+    .select-wrapper::after {
+        content: "▼";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 26px;
+        height: 100%;
+        background: #6ea3e2;
+        /* biru seperti gambar */
+        color: white;
+        font-size: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+    }
+</style>
+
+<body>
+
+    <div class="app">
+        <!-- HEADER -->
+        <div class="header-top">
+            <div class="header-left">
+                <div class="menu-stack">
+                    <span class="menu">≡</span>
+                    <button class="btn-back" onclick="history.back()">←</button>
+                </div>
+                <div>
+                    <div class="logo-text">
+                        TRANS<span class="m-red">M</span>EDIC
+                    </div>
+                    <div class="logo-sub">
+                        E-Healthcare / RSUD dr. Iskak Tulungagung
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-title"> Daftar Pasien
+        </div>
+
+
+        <!-- FILTER -->
+        <div class="filter-box">
+            <div class="filter-row">
+                <div class="filter-item">
+                    <label>Tanggal masuk</label>
+                    <input type="datetime-local">
+                </div>
+
+                <div class="filter-item">
+                    <label>Tanggal keluar</label>
+                    <input type="datetime-local">
+                </div>
+
+                <div class="filter-item">
+                    <label>No RM</label>
+                    <input type="text">
+                </div>
+
+                <div class="filter-item">
+                    <label>No Registrasi</label>
+                    <input type="text">
+                </div>
+
+                <div class="filter-item">
+                    <label>Nama Pasien</label>
+                    <input type="text">
+                </div>
+
+                <div class="filter-item">
+                    <label>Nama Ruangan</label>
+                    <div class="select-wrapper">
+                        <select>
+                            <option>ANGGREK</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="filter-item checkbox">
+                    <label>
+                        <input type="checkbox"> Pasien Masih Di Rawat
+                    </label>
+                </div>
+
+                <button class="btn-refresh">⟳</button>
+            </div>
+
+            <!-- <button class="btn-export">📄 Export to Excel</button> -->
+        </div>
+
+        <!-- TABLE -->
+        <div class="table-box">
+            <div class="table-top">
+                <button class="btn-export" onclick="alert('Excel berhasil diunduh.')">
+                    📄 Export to Excel
+                </button>
+            </div>
+
+            <div class="table-title">Tarik untuk mengelompokan data</div>
+
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tgl Registrasi</th>
+                            <th>No Registrasi</th>
+                            <th>No. Rekam Medis</th>
+                            <th>Nama Pasien</th>
+                            <th>Tgl Lahir</th>
+                            <th>Umur</th>
+                            <th>Dokter</th>
+                            <th>Jenis Kelamin</th>
+                            <th>Tipe Pembayaran</th>
+                            <th>Nama Ruangan</th>
+                            <th>Kelas</th>
+                            <th>Lama Dirawat</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="active">
+                            <td>11-11-2024 13:13</td>
+                            <td>11223344</td>
+                            <td>1252215</td>
+                            <td>SUMIAH</td>
+                            <td>17-06-1972</td>
+                            <td>52 thn 6 bln</td>
+                            <td>dr. NUGRA</td>
+                            <td>PEREMPUAN</td>
+                            <td>BPJS</td>
+                            <td>ANGGREK</td>
+                            <td>Kelas I</td>
+                            <td>18 days</td>
+                        </tr>
+
+                        <tr>
+                            <td>11-11-2024 14:13</td>
+                            <td>11223355</td>
+                            <td>1252216</td>
+                            <td>JUMATUN</td>
+                            <td>07-08-1979</td>
+                            <td>45 thn</td>
+                            <td>dr. NUGRA</td>
+                            <td>PEREMPUAN</td>
+                            <td>BPJS</td>
+                            <td>ANGGREK</td>
+                            <td>Kelas I</td>
+                            <td>5 days</td>
+                        </tr>
+
+                        <tr class="active">
+                            <td>11-11-2024 13:13</td>
+                            <td>11223344</td>
+                            <td>1252215</td>
+                            <td>SUMIAH</td>
+                            <td>17-06-1972</td>
+                            <td>52 thn</td>
+                            <td>dr. NUGRA</td>
+                            <td>PEREMPUAN</td>
+                            <td>BPJS</td>
+                            <td>ANGGREK</td>
+                            <td>Kelas I</td>
+                            <td>18 days</td>
+                        </tr>
+
+                        <!-- COPY baris ini berkali-kali -->
+                        <tr>
+                            <td>11-11-2024 14:13</td>
+                            <td>11223355</td>
+                            <td>1252216</td>
+                            <td>JUMATUN</td>
+                            <td>07-08-1979</td>
+                            <td>45 thn</td>
+                            <td>dr. NUGRA</td>
+                            <td>PEREMPUAN</td>
+                            <td>BPJS</td>
+                            <td>ANGGREK</td>
+                            <td>Kelas I</td>
+                            <td>5 days</td>
+                        </tr>
+
+                        <tr>
+                            <td>11-11-2024 15:13</td>
+                            <td>11223366</td>
+                            <td>1252217</td>
+                            <td>SUROTO</td>
+                            <td>19-02-1980</td>
+                            <td>67 thn</td>
+                            <td>dr. NUGRA</td>
+                            <td>LAKI-LAKI</td>
+                            <td>BPJS</td>
+                            <td>ANGGREK</td>
+                            <td>Kelas I</td>
+                            <td>3 days</td>
+                        </tr>
+
+
+
+                        <tr>
+                            <td>11-11-2024 15:13</td>
+                            <td>11223366</td>
+                            <td>1252217</td>
+                            <td>SUROTO</td>
+                            <td>19-02-1980</td>
+                            <td>67 thn</td>
+                            <td>dr. NUGRA</td>
+                            <td>LAKI-LAKI</td>
+                            <td>BPJS</td>
+                            <td>ANGGREK</td>
+                            <td>Kelas I</td>
+                            <td>3 days</td>
+                        </tr>
+
+
+                        <tr>
+                            <td>11-11-2024 15:13</td>
+                            <td>11223366</td>
+                            <td>1252217</td>
+                            <td>SUROTO</td>
+                            <td>19-02-1980</td>
+                            <td>67 thn</td>
+                            <td>dr. NUGRA</td>
+                            <td>LAKI-LAKI</td>
+                            <td>BPJS</td>
+                            <td>ANGGREK</td>
+                            <td>Kelas I</td>
+                            <td>3 days</td>
+                        </tr>
+
+
+                        <tr>
+                            <td>11-11-2024 15:13</td>
+                            <td>11223366</td>
+                            <td>1252217</td>
+                            <td>SUROTO</td>
+                            <td>19-02-1980</td>
+                            <td>67 thn</td>
+                            <td>dr. NUGRA</td>
+                            <td>LAKI-LAKI</td>
+                            <td>BPJS</td>
+                            <td>ANGGREK</td>
+                            <td>Kelas I</td>
+                            <td>3 days</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination">
+                <button>&laquo;</button>
+                <button>&lsaquo;</button>
+
+                <button class="active">1</button>
+                <button>2</button>
+                <button>3</button>
+
+                <button>&rsaquo;</button>
+                <button>&raquo;</button>
+            </div>
+
+        </div>
+
+        <!-- FOOTER BUTTON -->
+        <div class="footer-btn">
+            <a href="input-formulir-harian.html" class="btn blue">
+                <i class="fa-solid fa-pen-to-square"></i>
+                <span>Input KLPCM</span>
+            </a>
+
+            <a href="input-komponen.html" class="btn blue">
+                <i class="fa-solid fa-clipboard-check"></i>
+                <span>Analisis Kualitatif</span>
+            </a>
+
+            <a href="grafik.html" class="btn blue">
+                <i class="fa-solid fa-chart-column"></i>
+                <span>Grafik</span>
+            </a>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

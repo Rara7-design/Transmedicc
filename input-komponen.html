@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>KLPCM - Data Pasien</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 13px;
+        }
+
+        body {
+            margin: 0;
+            background: #f2f2f2;
+        }
+
+        /* ================= HEADER (JANGAN DIUBAH) ================= */
+        .header-top {
+            background: #2b2b2b;
+            color: white;
+            padding: 6px 10px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-stack {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .menu {
+            font-size: 18px;
+        }
+
+        .btn-back {
+            background: #1f1f1f;
+            color: white;
+            border: 1px solid #555;
+            padding: 2px 6px;
+            font-size: 12px;
+        }
+
+        .logo-text {
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .m-red {
+            color: red;
+        }
+
+        .logo-sub {
+            font-size: 11px;
+            color: #ccc;
+        }
+
+        .header-title {
+            background: #6ea3e2;
+            color: white;
+            padding: 6px 12px;
+            font-weight: bold;
+        }
+
+        /* WRAPPER */
+        .select-wrapper {
+            position: relative;
+            width: 210px;
+        }
+
+        /* SELECT */
+        .select-wrapper select {
+            width: 100%;
+            padding: 2px 28px 2px 6px;
+            /* space buat arrow */
+            font-size: 12px;
+            border: 1px solid #777;
+            background: white;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+
+        /* ARROW BIRU */
+        .select-wrapper::after {
+            content: "▼";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 26px;
+            height: 100%;
+            background: #6ea3e2;
+            /* biru seperti gambar */
+            color: white;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+
+        /* FILTER */
+        .filter-bar {
+            display: flex;
+            gap: 20px;
+            padding: 10px 16px;
+            background: #ffffff;
+            border-bottom: 1px solid #999;
+        }
+
+        .filter-box {
+            padding: 10px;
+            background: #e9e9e9;
+        }
+
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: end;
+        }
+
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-item input,
+        .filter-item select {
+            padding: 4px;
+            border: 1px solid #999;
+            border-radius: 3px;
+        }
+
+        .checkbox {
+            margin-left: 10px;
+        }
+
+        .btn-refresh {
+            padding: 6px 10px;
+            border: none;
+            background: #333;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .btn-export {
+            margin-top: 8px;
+            background: #444;
+            color: #fff;
+            border: none;
+            padding: 6px 10px;
+            cursor: pointer;
+        }
+
+        /* ================= CONTENT ================= */
+        .container {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+        }
+
+        .box {
+            background: #dcd9c2;
+            border: 1px solid #999;
+            padding: 6px;
+            flex: 1;
+            height: 430px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #999;
+            padding: 6px;
+            vertical-align: middle;
+        }
+
+        th {
+            background: #bfbca0;
+            text-align: center;
+        }
+
+        .radio-col {
+            width: 55px;
+            text-align: center;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            height: 26px;
+            border: 1px solid #777;
+        }
+
+        /* ================= FOOTER ================= */
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background: #fff;
+            border-top: 1px solid #aaa;
+        }
+
+        .footer-left {
+            width: 65%;
+        }
+
+        .footer-left input {
+            width: 100%;
+            height: 28px;
+        }
+
+        .footer-right {
+            display: flex;
+            gap: 6px;
+            align-items: flex-end;
+        }
+
+        .btn {
+            padding: 6px 14px;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .blue {
+            background: #2c6fd6;
+        }
+
+        .red {
+            background: #e74c3c;
+        }
+
+        .cyan {
+            background: #1abc9c;
+        }
+
+        .gray {
+            background: #7f8c8d;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <div class="header-top">
+        <div class="header-left">
+            <div class="menu-stack">
+                <span class="menu">≡</span>
+                <button class="btn-back" onclick="history.back()">←</button>
+            </div>
+            <div>
+                <div class="logo-text">TRANS<span class="m-red">M</span>EDIC</div>
+                <div class="logo-sub">E-Healthcare / RSUD dr. Iskak Tulungagung</div>
+            </div>
+        </div>
+    </div>
+    <div class="header-title">Data Pasien</div>
+
+    <!-- FILTER -->
+    <div class="filter-bar">
+        <div class="filter-item">
+            <label>Dokter Penanggung Jawab</label>
+            <div class="select-wrapper">
+                <select>
+                    <option>dr. NURUDIN, Sp.B</option>
+                    <option>dr. Andi</option>
+                </select>
+            </div>
+        </div>
+        <div class="filter-item">
+            <label>Kasus Penyakit</label>
+            <div class="select-wrapper">
+                <select>
+                    <option>-</option>
+                    <option>Bedah</option>
+                    <option>Penyakit Dalam</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- CONTENT -->
+    <div class="container">
+        <!-- LEFT TABLE -->
+        <div class="box">
+            <table>
+                <tr>
+                    <th>Komponen</th>
+                    <th>Detail Komponen</th>
+                    <th class="radio-col">Konsisten</th>
+                    <th class="radio-col">Tidak Konsisten</th>
+                    <th class="radio-col">N/A</th>
+                    <th>Catatan</th>
+                </tr>
+
+                <tr>
+                    <td rowspan="8"><b>KOMPONEN 1<br>KELENGKAPAN DAN<br>KEKONSISTENAN</b></td>
+                    <td>DIAGNOSA MASUK (ADMITTING DIAGNOSIS)</td>
+                    <td class="radio-col"><input type="radio"></td>
+                    <td class="radio-col"><input type="radio"></td>
+                    <td class="radio-col"><input type="radio"></td>
+                    <td><input type="text"></td>
+                </tr>
+
+                <tr>
+                    <td>DIAGNOSA MASUK (ADDITIONAL DIAGNOSIS)</td>
+                    <td class="radio-col"><input type="radio"></td>
+                    <td class="radio-col"><input type="radio"></td>
+                    <td class="radio-col"><input type="radio"></td>
+                    <td><input type="text"></td>
+                </tr>
+
+                <tr>
+                    <td>PREOPERATIVE DIAGNOSIS</td>
+                    <td class="radio-col"><input type="radio"></td>
+                    <td class="radio-col"><input type="radio"></td>
+                    <td class="radio-col"><input type="radio"></td>
+                    <td><input type="text"></td>
+                </tr>
+
+                <tr>
+                    <td>POSTOPERATIVE DIAGNOSIS</td>
+                    <td class="radio-col"><input type="radio"></td>
+                    <td class="radio-col"><input type="radio"></td>
+                    <td class="radio-col"><input type="radio"></td>
+                    <td><input type="text"></td>
+                </tr>
+
+                <tr>
+                    <td>DIAGNOSA UTAMA (PRINCIPAL DIAGNOSIS)</td>
+                    <td class="radio-col"><input type="radio"></td>
+                    <td class="radio-col"><input type="radio"></td>
+                    <td class="radio-col"><input type="radio"></td>
+                    <td><input type="text"></td>
+                </tr>
+
+                <tr>
+                    <td>DIAGNOSA KEDUA (SECONDARY DIAGNOSIS)</td>
+                    <td class="radio-col"><input type="radio"></td>
+                    <td class="radio-col"><input type="radio"></td>
+                    <td class="radio-col"><input type="radio"></td>
+                    <td><input type="text"></td>
+                </tr>
+
+                <tr>
+                    <td>KOMPLIKASI ATAU PENYAKIT LAINNYA (COMORBIDITY)</td>
+                    <td class="radio-col"><input type="radio"></td>
+                    <td class="radio-col"><input type="radio"></td>
+                    <td class="radio-col"><input type="radio"></td>
+                    <td><input type="text"></td>
+                </tr>
+
+                <tr>
+                    <td>PENYEBAB LUAR ATAU CEDERA (EXTERNAL CAUSE)</td>
+                    <td class="radio-col"><input type="radio"></td>
+                    <td class="radio-col"><input type="radio"></td>
+                    <td class="radio-col"><input type="radio"></td>
+                    <td><input type="text"></td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- RIGHT TABLE -->
+        <div class="box">
+            <table>
+                <tr>
+                    <th>Komponen Penilaian</th>
+                    <th>Detail Komponen Penilaian</th>
+                    <th>Status</th>
+                    <th>DPJP</th>
+                    <th>SMF</th>
+                    <th>Catatan</th>
+                    <th>Hapus</th>
+                </tr>
+
+                <tr>
+                    <td rowspan="9"><b>KELENGKAPAN DAN KEKONSISTENAN</b></td>
+                    <td>DIAGNOSA MASUK (ADMITTING DIAGNOSIS)</td>
+                    <td>Konsisten</td>
+                    <td>dr. NURUDIN, Sp.B</td>
+                    <td>Bedah</td>
+                    <td></td>
+                    <td class="radio-col"><input type="checkbox"></td>
+                </tr>
+
+                <tr>
+                    <td>POSTOPERATIVE DIAGNOSIS (ADDITIONAL)</td>
+                    <td>N/A</td>
+                    <td>dr. NURUDIN, Sp.B</td>
+                    <td>Bedah</td>
+                    <td></td>
+                    <td class="radio-col"><input type="checkbox"></td>
+                </tr>
+
+                <tr>
+                    <td>PREOPERATIVE DIAGNOSIS</td>
+                    <td>Konsisten</td>
+                    <td>dr. NURUDIN, Sp.B</td>
+                    <td>Bedah</td>
+                    <td></td>
+                    <td class="radio-col"><input type="checkbox"></td>
+                </tr>
+
+                <tr>
+                    <td>POSTOPERATIVE DIAGNOSIS</td>
+                    <td>Konsisten</td>
+                    <td>dr. NURUDIN, Sp.B</td>
+                    <td>Bedah</td>
+                    <td></td>
+                    <td class="radio-col"><input type="checkbox"></td>
+                </tr>
+
+                <tr>
+                    <td>DIAGNOSA UTAMA</td>
+                    <td>Konsisten</td>
+                    <td>dr. NURUDIN, Sp.B</td>
+                    <td>Bedah</td>
+                    <td></td>
+                    <td class="radio-col"><input type="checkbox"></td>
+                </tr>
+
+                <tr>
+                    <td>DIAGNOSA KEDUA</td>
+                    <td>Konsisten</td>
+                    <td>dr. NURUDIN, Sp.B</td>
+                    <td>Bedah</td>
+                    <td></td>
+                    <td class="radio-col"><input type="checkbox"></td>
+                </tr>
+
+                <tr>
+                    <td>KOMPLIKASI ATAU PENYAKIT LAINNYA</td>
+                    <td>Konsisten</td>
+                    <td>dr. NURUDIN, Sp.B</td>
+                    <td>Bedah</td>
+                    <td></td>
+                    <td class="radio-col"><input type="checkbox"></td>
+                </tr>
+
+                <tr>
+                    <td>PENYEBAB LUAR ATAU CEDERA</td>
+                    <td>Konsisten</td>
+                    <td>dr. NURUDIN, Sp.B</td>
+                    <td>Bedah</td>
+                    <td></td>
+                    <td class="radio-col"><input type="checkbox"></td>
+                </tr>
+
+                <tr>
+                    <td>CATATAN ASUHAN KEPERAWATAN</td>
+                    <td>Konsisten</td>
+                    <td>dr. NURUDIN, Sp.B</td>
+                    <td>Bedah</td>
+                    <td></td>
+                    <td class="radio-col"><input type="checkbox"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <div class="footer-left">
+            <label>Catatan</label>
+            <input type="text">
+            <br><br>
+            <button class="btn blue">💾 Simpan</button>
+        </div>
+        <div class="footer-right">
+            <button class="btn red" onclick="filterStatus('Tidak Konsisten')">Tidak Lengkap</button>
+            <button class="btn cyan" onclick="filterStatus('Konsisten')">Lengkap</button>
+            <button class="btn gray" onclick="filterStatus('N/A')">N/A</button>
+            <button class="btn red">Hapus</button>
+        </div>
+    </div>
+
+    <div id="popup"
+        style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.4); align-items:center; justify-content:center; z-index:999;">
+        <div id="popupBox" style="background:white; width:320px; padding:20px; border-radius:6px; text-align:center;">
+            <h3 id="popupTitle"></h3>
+            <p id="popupMsg" style="white-space:pre-line;"></p>
+            <button onclick="closePopup()" class="btn blue">OK</button>
+        </div>
+    </div>
+
+    <script>
+        /* ================= POPUP ================= */
+        function showPopup(title, msg, success = false, callback = null) {
+            document.getElementById("popupTitle").innerText = title;
+            document.getElementById("popupMsg").innerText = msg;
+
+            const box = document.getElementById("popupBox");
+            box.style.borderTop = success ? "6px solid #2196f3" : "6px solid #e53935";
+
+            document.getElementById("popup").style.display = "flex";
+
+            box.dataset.callback = callback ? "yes" : "";
+            box._callback = callback;
+        }
+
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+            const box = document.getElementById("popupBox");
+            if (box._callback) {
+                box._callback();
+                box._callback = null;
+            }
+        }
+
+        /* ================= SIMPAN ================= */
+        document.querySelector(".footer-left .btn.blue")
+            .addEventListener("click", () => {
+
+                const radios = document.querySelectorAll(
+                    ".container .box:first-child input[type='radio']"
+                );
+
+                let selected = false;
+                radios.forEach(r => { if (r.checked) selected = true });
+
+                if (!selected) {
+                    showPopup("GAGAL", "Pilih status terlebih dahulu.");
+                    return;
+                }
+
+                showPopup("BERHASIL", "Data KLPCM berhasil disimpan.", true);
+            });
+
+        /* ================= FILTER ================= */
+        function filterStatus(status) {
+            const rows = document.querySelectorAll(
+                ".container .box:last-child table tr[data-status]"
+            );
+
+            rows.forEach(row => {
+                if (row.dataset.status === status) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+
+        /* ================= HAPUS ================= */
+        document.querySelector(".btn.red:last-child")
+            .addEventListener("click", () => {
+
+                const checked = document.querySelectorAll(
+                    ".container .box:last-child input[type='checkbox']:checked"
+                );
+
+                if (checked.length === 0) {
+                    showPopup("GAGAL", "Pilih data yang ingin dihapus.");
+                    return;
+                }
+
+                showPopup(
+                    "KONFIRMASI",
+                    "Yakin ingin menghapus data terpilih?",
+                    false,
+                    () => {
+                        checked.forEach(cb => cb.closest("tr").remove());
+                    }
+                );
+            });
+    </script>
+
+
+
+</body>
+
+</html>

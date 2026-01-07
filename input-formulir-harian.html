@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>KLPCM - Daftar Pasien</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+        }
+
+        body {
+            margin: 0;
+            background: #f2f2f2;
+        }
+
+        /* ================= HEADER ================= */
+        /* ===== HEADER HITAM ===== */
+        .header-top {
+            background: #2b2b2b;
+            color: white;
+            padding: 6px 10px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-stack {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .menu {
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .btn-back {
+            background: #1f1f1f;
+            color: white;
+            border: 1px solid #555;
+            padding: 2px 6px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .logo-text {
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .m-red {
+            color: red;
+        }
+
+        .logo-sub {
+            font-size: 11px;
+            color: #ccc;
+        }
+
+        /* ===== HEADER BIRU ===== */
+        .header-title {
+            background: #6ea3e2;
+            color: white;
+            padding: 6px 12px;
+            font-weight: bold;
+        }
+
+        /* ================= FILTER ================= */
+        .filter-bar {
+            display: flex;
+            gap: 22px;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            margin-top: 10px;
+
+            /* INI PENTING */
+            padding-left: 18px;
+        }
+
+
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+            font-size: 12px;
+        }
+
+        .filter-item label {
+            margin-top: 5px;
+            margin-bottom: 2px;
+            font-size: 12px;
+            color: #000;
+        }
+
+        .filter-bar,
+        .filter-bar input,
+        .filter-bar select {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+        }
+
+        .filter-bar label {
+            font-size: 12px;
+            font-weight: 600;
+            /* bold tapi halus */
+            margin-bottom: 2px;
+            color: #000;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+
+        /* INPUT & SELECT */
+        .filter-item input,
+        .filter-item select {
+            height: 26px;
+            padding: 3px 8px;
+            font-size: 12px;
+            font-family: Arial, Helvetica, sans-serif;
+            border: 1px solid #8c8c8c;
+            border-radius: 4px;
+            min-width: 200px;
+            box-sizing: border-box;
+        }
+
+        /* Lebar khusus biar proporsional */
+        .filter-item:nth-child(1) input {
+            min-width: 210px;
+        }
+
+        .filter-item:nth-child(2) select {
+            min-width: 230px;
+        }
+
+        .filter-item:nth-child(3) select,
+        .filter-item:nth-child(4) select {
+            min-width: 180px;
+        }
+
+        /* DROPDOWN PANAH BIRU */
+        .filter-item select {
+            appearance: none;
+            background-color: #fff;
+            background-image:
+                linear-gradient(45deg, transparent 50%, #1e73be 50%),
+                linear-gradient(135deg, #1e73be 50%, transparent 50%),
+                linear-gradient(to right, #cfe3ff, #cfe3ff);
+            background-position:
+                calc(100% - 16px) 10px,
+                calc(100% - 11px) 10px,
+                100% 0;
+            background-size:
+                5px 5px,
+                5px 5px,
+                30px 100%;
+            background-repeat: no-repeat;
+        }
+
+        /* DATETIME ICON RAPET */
+        .filter-item input[type="datetime-local"] {
+            padding-right: 6px;
+        }
+
+
+        /* ================= TAB ================= */
+        .tab {
+            display: flex;
+            gap: 20px;
+            padding: 8px 12px;
+            font-weight: bold;
+            background: #fff;
+        }
+
+        .tab span {
+            cursor: pointer;
+        }
+
+        .tab .active {
+            border-bottom: 3px solid red;
+        }
+
+        /* ================= CONTENT ================= */
+        .content {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+        }
+
+        .box {
+            flex: 1;
+            background: #e7e3c8;
+        }
+
+        .box-title {
+            background: #333;
+            color: white;
+            padding: 6px 10px;
+            font-weight: bold;
+        }
+
+        /* ================= TABLE ================= */
+        .table-wrapper {
+            padding: 6px;
+        }
+
+        .table-tools {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 6px;
+        }
+
+        .export-btn {
+            background: #111;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+
+        .table-scroll {
+            max-height: 240px;
+            overflow-y: auto;
+            /* cuma scroll ke bawah */
+            overflow-x: hidden;
+            /* matiin scroll samping */
+            border: 1px solid #555;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            /* full container */
+            table-layout: fixed;
+            /* biar kolom nurut */
+        }
+
+        th,
+        td {
+            border: 1px solid #666;
+            padding: 6px;
+            white-space: normal;
+            /* BOLEH TURUN BARIS */
+            word-wrap: break-word;
+            text-align: left;
+        }
+
+
+        thead th {
+            background: #3b3b3b;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        tr.danger {
+            background: #c84c4c;
+            color: white;
+        }
+
+        /* ================= CATATAN ================= */
+        .catatan {
+            padding: 10px;
+        }
+
+        .catatan input {
+            width: 100%;
+            padding: 6px;
+        }
+
+        /* ================= BUTTON ================= */
+        .action {
+            display: flex;
+            justify-content: flex-end;
+            gap: 6px;
+            padding: 10px;
+        }
+
+        .btn {
+            border: none;
+            padding: 6px 14px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .blue {
+            background: #4e8dd9;
+        }
+
+        .red {
+            background: #e74c3c;
+        }
+
+        .cyan {
+            background: #27b3e6;
+        }
+
+        .gray {
+            background: #777;
+        }
+
+        .green {
+            background: #27ae60;
+        }
+
+        /* FOOTER BUTTON AREA */
+        .action-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
+
+        /* SIMPAN DI KIRI */
+        .action-left {
+            display: flex;
+        }
+
+        /* BUTTON LAIN DI KANAN */
+        .action-right {
+            display: flex;
+            gap: 6px;
+        }
+
+        /* POPUP */
+        .popup-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+
+        .popup-box {
+            background: #c0392b;
+            color: white;
+            padding: 20px;
+            width: 320px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .popup-box.success {
+            background: #27ae60;
+        }
+
+        .popup-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .popup-box button {
+            margin-top: 15px;
+            padding: 6px 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .tab-item {
+            text-decoration: none;
+            color: #000;
+            padding-bottom: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <div class="header-top">
+        <div class="header-left">
+            <div class="menu-stack">
+                <span class="menu">≡</span>
+                <button class="btn-back" onclick="history.back()">←</button>
+            </div>
+            <div>
+                <div class="logo-text">
+                    TRANS<span class="m-red">M</span>EDIC
+                </div>
+                <div class="logo-sub">
+                    E-Healthcare / RSUD dr. Iskak Tulungagung
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="header-title"> Daftar Pasien
+    </div>
+
+    <!-- FILTER -->
+    <div class="filter-bar">
+        <div class="filter-item">
+            <label>Tanggal masuk</label>
+            <div class="input-icon">
+                <input type="datetime-local" value="2024-11-11T13:13">
+            </div>
+        </div>
+
+        <div class="filter-item">
+            <label>Dokter penanggung jawab</label>
+            <select>
+                <option>dr. Rama</option>
+            </select>
+        </div>
+
+        <div class="filter-item">
+            <label>Dokter 1</label>
+            <select>
+                <option>-</option>
+            </select>
+        </div>
+
+        <div class="filter-item">
+            <label>Dokter 2</label>
+            <select>
+                <option>-</option>
+            </select>
+        </div>
+    </div>
+
+
+    <!-- TAB -->
+    <div class="tab">
+        <span class="active">HARIAN</span>
+        <a href="input-formulir-sekali.html" class="tab-item">SEKALI</a>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <!-- KIRI -->
+        <div class="box">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Lengkap</th>
+                            <th>Tidak</th>
+                            <th>Kode Formulir</th>
+                            <th>Nama Formulir</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="radio" name="rm1"></td>
+                            <td><input type="radio" name="rm1"></td>
+                            <td>RM10</td>
+                            <td>Pengkajian IGD</td>
+                        </tr>
+                        <tr>
+                            <td><input type="radio" name="rm2"></td>
+                            <td><input type="radio" name="rm2"></td>
+                            <td>RM11</td>
+                            <td>Resume Medis</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- KANAN -->
+        <div class="box">
+
+            <div class="table-wrapper">
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No. KLPCM</th>
+                                <th>Tgl. Assesmen</th>
+                                <th>Ruangan</th>
+                                <th>Pegawai</th>
+                                <th>Nama Formulir</th>
+                                <th>Status</th>
+                                <th>Hapus</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- DATA BANYAK BIAR SCROLL -->
+                            <script>
+                                for (let i = 1; i <= 5; i++) {
+                                    document.write(`
+                            <tr data-status="tidak">
+    <td>K251201</td>
+    <td>2025-12-01</td>
+    <td>ANGGREK</td>
+    <td>ADE</td>
+    <td>Catatan</td>
+    <td>Tidak Lengkap</td>
+    <td><input type="checkbox" class="row-check"></td>
+</tr>
+
+                            `, `
+                            <tr data-status="lengkap">
+    <td>K251201</td>
+    <td>2025-12-01</td>
+    <td>ANGGREK</td>
+    <td>ADE</td>
+    <td>Catatan</td>
+    <td>Lengkap</td>
+    <td><input type="checkbox" class="row-check"></td>
+</tr>
+
+                            `, `
+                            <tr data-status="na">
+    <td>K251201</td>
+    <td>2025-12-01</td>
+    <td>ANGGREK</td>
+    <td>ADE</td>
+    <td>Catatan</td>
+    <td>N/A</td>
+    <td><input type="checkbox" class="row-check"></td>
+</tr>
+
+                            `)
+                                }
+                            </script>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- BUTTON -->
+    <!-- FOOTER ACTION -->
+    <div class="action-footer">
+        <!-- KIRI -->
+        <div class="action-left">
+            <button class="btn blue" id="btnSimpan">💾 Simpan</button>
+        </div>
+
+        <!-- KANAN -->
+        <div class="action-right">
+            <button class="btn red" id="btnTidak">Tidak Lengkap</button>
+            <button class="btn cyan" id="btnLengkap">Lengkap</button>
+            <button class="btn gray" id="btnNA">N/A</button>
+            <button class="btn red" id="btnHapus">Hapus</button>
+        </div>
+
+    </div>
+
+    <!-- POPUP -->
+    <div class="popup-overlay" id="popup">
+        <div class="popup-box" id="popupBox">
+            <div class="popup-title" id="popupTitle">Error</div>
+            <div class="popup-msg" id="popupMsg"></div>
+            <button onclick="closePopup()">OK</button>
+        </div>
+    </div>
+
+
+    <script>
+        function showPopup(title, msg, success = false) {
+            const popup = document.getElementById("popup");
+            const box = document.getElementById("popupBox");
+
+            document.getElementById("popupTitle").innerText = title;
+            document.getElementById("popupMsg").innerText = msg;
+
+            box.classList.toggle("success", success);
+            popup.style.display = "flex";
+        }
+
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+
+        document.getElementById("btnSimpan").addEventListener("click", function () {
+
+            // === AMBIL RADIO TABEL KIRI SAJA ===
+            const leftRadios = document.querySelectorAll(
+                ".content .box:first-child input[type='radio']"
+            );
+
+            let selectedStatus = false;
+
+            leftRadios.forEach(r => {
+                if (r.checked) selectedStatus = true;
+            });
+
+            // ❌ BELUM PILIH STATUS
+            if (!selectedStatus) {
+                showPopup(
+                    "GAGAL",
+                    "Pilih status Lengkap / Tidak Lengkap terlebih dahulu.",
+                    false
+                );
+                return;
+            }
+
+            // === SIMULASI ERROR JARINGAN (30%) ===
+            const networkError = Math.random() < 0.3;
+
+            if (networkError) {
+                showPopup(
+                    "GAGAL SIMPAN",
+                    "Koneksi bermasalah.\nSilakan coba lagi.",
+                    false
+                );
+                return;
+            }
+
+            // === LOLOS SIMPAN ===
+            showPopup(
+                "BERHASIL",
+                "Data KLPCM berhasil disimpan.",
+                true
+            );
+        });
+    </script>
+
+    <script>
+        function updateStatusCount() {
+            const rows = document.querySelectorAll(".table-scroll tbody tr");
+
+            let countLengkap = 0;
+            let countTidak = 0;
+            let countNA = 0;
+
+            rows.forEach(row => {
+                const status = row.dataset.status;
+                if (status === "lengkap") countLengkap++;
+                if (status === "tidak") countTidak++;
+                if (status === "na") countNA++;
+            });
+
+            // Update teks button
+            document.getElementById("btnLengkap").innerText =
+                `Lengkap (${countLengkap})`;
+
+            document.getElementById("btnTidak").innerText =
+                `Tidak Lengkap (${countTidak})`;
+
+            document.getElementById("btnNA").innerText =
+                `N/A (${countNA})`;
+        }
+
+        // Panggil pertama kali saat halaman load
+        updateStatusCount();
+    </script>
+
+
+    <script>
+        function getRightRows() {
+            return document.querySelectorAll(".table-scroll tbody tr");
+        }
+
+        // ===== FILTER =====
+        function filterTable(status) {
+            let found = false;
+
+            getRightRows().forEach(row => {
+                if (row.dataset.status === status) {
+                    row.style.display = "";
+                    found = true;
+                } else {
+                    row.style.display = "none";
+                }
+            });
+
+            if (!found) {
+                showPopup(
+                    "INFO",
+                    "Data tidak ditemukan.",
+                    false
+                );
+            }
+        }
+
+        document.getElementById("btnLengkap").onclick = () =>
+            filterTable("lengkap");
+
+        document.getElementById("btnTidak").onclick = () =>
+            filterTable("tidak");
+
+        document.getElementById("btnNA").onclick = () =>
+            filterTable("na");
+
+        // ===== HAPUS =====
+        document.getElementById("btnHapus").onclick = () => {
+            let deleted = false;
+
+            getRightRows().forEach(row => {
+                const cb = row.querySelector(".row-check");
+                if (cb && cb.checked) {
+                    row.remove();
+                    deleted = true;
+                }
+            });
+
+            if (!deleted) {
+                showPopup(
+                    "GAGAL",
+                    "Pilih data yang ingin dihapus.",
+                    false
+                );
+            } else {
+                updateStatusCount(); // 🔥 INI YANG DITAMBAHIN
+                showPopup(
+                    "BERHASIL",
+                    "Data terpilih berhasil dihapus.",
+                    true
+                );
+            }
+        };
+
+    </script>
+
+
+</body>
+
+</html>

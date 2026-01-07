@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Rekap KLPCM</title>
+
+    <style>
+        * {
+            font-family: Arial;
+            font-size: 13px;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f2f2f2;
+        }
+
+        /* ===== HEADER HITAM ===== */
+        .header-top {
+            background: #2b2b2b;
+            color: #fff;
+            padding: 6px 10px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-stack {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .menu {
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .btn-back {
+            background: #1f1f1f;
+            color: white;
+            border: 1px solid #555;
+            padding: 2px 6px;
+            cursor: pointer;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
+        .btn-back:hover {
+            background: #444;
+        }
+
+
+        .menu {
+            font-size: 18px;
+        }
+
+        .logo-block {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+
+        .logo-text {
+            font-weight: bold;
+            font-size: 15px;
+            letter-spacing: 1px;
+        }
+
+        .m-red {
+            color: red;
+        }
+
+        .logo-sub {
+            font-size: 11px;
+            color: #cfcfcf;
+        }
+
+        /* ===== HEADER BIRU ===== */
+        .header-title {
+            background: #6ea3e2;
+            color: #fff;
+            padding: 6px 12px;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+
+        /* ===== CONTENT ===== */
+        .wrapper {
+            padding: 14px;
+            background: #fff;
+        }
+
+        /* EXPORT */
+        .export-btn {
+            background: #555;
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        /* JUDUL */
+        .month {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 14px 0 4px;
+        }
+
+        /* TAB */
+        .tab {
+            display: flex;
+            gap: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .tab span {
+            cursor: pointer;
+            padding-bottom: 6px;
+        }
+
+        .tab .active {
+            border-bottom: 3px solid red;
+        }
+
+        /* GARIS */
+        .hr {
+            height: 2px;
+            background: #bdbdf0;
+            margin-bottom: 16px;
+        }
+
+        /* TABEL AREA */
+        .table-area {
+            display: flex;
+            gap: 30px;
+        }
+
+        /* BOX TABEL */
+        .box {
+            flex: 1;
+        }
+
+        .box table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        .box th {
+            background: #d6d2bb;
+            padding: 8px;
+            border: 1px solid #fff;
+            text-align: center;
+        }
+
+        .box td {
+            background: #eaeaea;
+            padding: 8px;
+            border: 1px solid #fff;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* TANPA SCROLL SAMPING */
+        table {
+            overflow-x: hidden;
+        }
+
+        .tab-item {
+            text-decoration: none;
+            color: #000;
+            padding-bottom: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <div class="header-top">
+        <div class="header-left">
+
+            <!-- MENU + BACK (VERTIKAL) -->
+            <div class="menu-stack">
+                <span class="menu">≡</span>
+                <button class="btn-back" onclick="history.back()">←</button>
+            </div>
+
+            <!-- LOGO -->
+            <div class="logo-block">
+                <div class="logo-text">
+                    TRANS<span class="m-red">M</span>EDIC
+                </div>
+                <div class="logo-sub">
+                    E-Healthcare / RSUD dr. Iskak Tulungagung
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="header-title">
+        Input KLPCM
+    </div>
+
+    <!-- CONTENT -->
+    <div class="wrapper">
+
+        <button class="export-btn" onclick="alert('Excel berhasil diunduh.')">📄 Export to Excel</button>
+
+        <div class="month">Desember</div>
+
+        <div class="tab">
+            <a href="input-klpcm-harian.html" class="tab-item">HARIAN</a>
+            <span class="active">SEKALI</span>
+        </div>
+
+        <div class="hr"></div>
+
+        <div class="table-area">
+
+            <!-- TABEL KIRI -->
+            <div class="box">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tidak Lengkap</th>
+                            <th>Formulir</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>6</td>
+                            <td>RM 10</td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td>RM 11</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>RM 12</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>RM 13</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>RM 14</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>RM 57a</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TABEL KANAN -->
+            <div class="box">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tidak Lengkap</th>
+                            <th>Formulir</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>16</td>
+                            <td>RM 10</td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td>RM 11</td>
+                        </tr>
+                        <tr>
+                            <td>19</td>
+                            <td>RM 12</td>
+                        </tr>
+                        <tr>
+                            <td>23</td>
+                            <td>RM 13</td>
+                        </tr>
+                        <tr>
+                            <td>27</td>
+                            <td>RM 14</td>
+                        </tr>
+                        <tr>
+                            <td>35</td>
+                            <td>RM 57a</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

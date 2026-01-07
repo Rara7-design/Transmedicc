@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Grafik 10 Besar Ruangan</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+
+        body {
+            margin: 0;
+            background: #f4f6f8;
+        }
+
+        /* ================= HEADER ================= */
+        .header-top {
+            background: #2b2b2b;
+            color: white;
+            padding: 6px 10px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-stack {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .menu {
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .btn-back {
+            background: #1f1f1f;
+            color: white;
+            border: 1px solid #555;
+            padding: 2px 6px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .logo-text {
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .m-red {
+            color: red;
+        }
+
+        .logo-sub {
+            font-size: 11px;
+            color: #ccc;
+        }
+
+        /* ===== HEADER BIRU ===== */
+        .header-title {
+            background: #6ea3e2;
+            color: white;
+            padding: 6px 12px;
+            font-weight: bold;
+            border: 1px solid #555;
+
+        }
+
+
+        /* ================= CONTENT ================= */
+        .container {
+            background: white;
+            margin: 8px;
+            padding: 8px;
+            border: 1px solid #ccc;
+        }
+
+        .top-control {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .left-control {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-export {
+            background: #666;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        /* SELECT SEGITIGA BIRU */
+        .select-wrap {
+            position: relative;
+            width: 120px;
+        }
+
+        .select-wrap select {
+            width: 100%;
+            padding: 2px 26px 2px 6px;
+            border: 1px solid #777;
+            appearance: none;
+        }
+
+        .select-wrap::after {
+            content: "▼";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 24px;
+            height: 100%;
+            background: #6ea3e2;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        /* ================= CHART ================= */
+        .title-month {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 6px 0 4px;
+        }
+
+        .chart-area {
+            height: 380px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <div class="header-top">
+        <div class="header-left">
+            <div class="menu-stack">
+                <span class="menu">≡</span>
+                <button class="btn-back" onclick="history.back()">←</button>
+            </div>
+            <div>
+                <div class="logo-text">
+                    TRANS<span class="m-red">M</span>EDIC
+                </div>
+                <div class="logo-sub">
+                    E-Healthcare / RSUD dr. Iskak Tulungagung
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="header-title"> Grafik
+    </div>
+    <div class="header-title"> 10 Besar Ruangan
+    </div>
+
+    <!-- CONTENT -->
+    <div class="container">
+
+        <div class="top-control">
+            <div class="left-control">
+                <button class="btn-export" onclick="alert('Excel berhasil diunduh.')">📄 Export to Excel</button>
+                <div><strong>Ruangan</strong></div>
+                <div class="select-wrap">
+                    <select onchange="handleSelect(this.value)">
+                        <option>Semua</option>
+                        <option value="ruangan.html">Melati</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <div><strong>Periode</strong></div>
+                <div class="select-wrap">
+                    <select>
+                        <option>Desember</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="title-month">Desember</div>
+
+        <div class="chart-area">
+            <canvas id="chartRuangan"></canvas>
+        </div>
+    </div>
+
+    <script>
+        new Chart(document.getElementById('chartRuangan'), {
+            type: 'bar',
+            data: {
+                labels: [
+                    'Ruang Melati',
+                    'Ruang Mawar',
+                    'Ruang Graha Mandiri 1',
+                    'Ruang Graha Mandiri 2',
+                    'Ruang Graha Mandiri 3',
+                    'Ruang Graha Mandiri 4',
+                    'Ruang Graha Mandiri 5',
+                    'Ruang Wijaya Kusuma',
+                    'Ruang Pulmonary Intensif RICU',
+                    'Ruang Dahlia'
+                ],
+                datasets: [{
+                    data: [20, 17, 15, 14, 10, 8, 6, 4, 3, 3],
+                    backgroundColor: '#f57c2a'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 20,
+                        ticks: {
+                            callback: v => v + '%'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+    <script>
+        function handleSelect(value) {
+            if (value) {
+                window.location.href = value;
+            }
+        }
+    </script>
+
+</body>
+
+</html>

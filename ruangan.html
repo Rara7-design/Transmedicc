@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Grafik Melati</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+
+        body {
+            margin: 0;
+            background: #f4f6f8;
+        }
+
+        /* HEADER */
+        .header-top {
+            background: #2b2b2b;
+            color: white;
+            padding: 6px 10px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-stack {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .menu {
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .btn-back {
+            background: #1f1f1f;
+            color: white;
+            border: 1px solid #555;
+            padding: 2px 6px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .logo-text {
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .m-red {
+            color: red;
+        }
+
+        .logo-sub {
+            font-size: 11px;
+            color: #ccc;
+        }
+
+        /* ===== HEADER BIRU ===== */
+        .header-title {
+            background: #6ea3e2;
+            color: white;
+            padding: 6px 12px;
+            font-weight: bold;
+        }
+
+        /* CONTENT */
+        .container {
+            background: white;
+            margin: 8px;
+            padding: 10px;
+            border: 1px solid #aaa;
+        }
+
+        .top-action {
+            margin-bottom: 8px;
+        }
+
+        .btn-export {
+            background: #666;
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .layout {
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 6px 14px;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .blue {
+            background: #2c6fd6;
+        }
+
+        /* LEFT */
+        .left-info {
+            width: 200px;
+        }
+
+        .left-info h1 {
+            font-size: 26px;
+            margin: 10px 0 0;
+        }
+
+        /* CHART */
+        .chart-wrapper {
+            flex: 1;
+            border: 1px solid #999;
+            padding: 10px;
+        }
+
+        .chart-box {
+            height: 420px;
+        }
+
+        /* FOOTER BUTTON */
+        .footer-btn {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .footer-btn button {
+            background: #4a90e2;
+            color: white;
+            border: none;
+            padding: 6px 30px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <div class="header-top">
+        <div class="header-left">
+            <div class="menu-stack">
+                <span class="menu">≡</span>
+                <button class="btn-back" onclick="history.back()">←</button>
+            </div>
+            <div>
+                <div class="logo-text">
+                    TRANS<span class="m-red">M</span>EDIC
+                </div>
+                <div class="logo-sub">
+                    E-Healthcare / RSUD dr. Iskak Tulungagung
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="header-title"> Grafik
+    </div>
+
+    <!-- CONTENT -->
+    <div class="container">
+
+        <div class="top-action">
+            <button class="btn-export" onclick="alert('Excel berhasil diunduh.')">📄 Export to Excel</button>
+        </div>
+
+        <div class="layout">
+            <!-- LEFT -->
+            <div class="left-info">
+                <h1>Melati</h1>
+            </div>
+
+            <!-- CHART -->
+            <div class="chart-wrapper">
+                <div class="chart-box">
+                    <canvas id="melatiChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-btn">
+            <a href="kuantitatif.html" class="btn blue">
+                <span>Kuantitatif</span>
+            </a>
+            <a href="kualitatif.html" class="btn blue">
+                <span>Kualitatif</span>
+            </a>
+        </div>
+
+    </div>
+
+    <script>
+        new Chart(document.getElementById('melatiChart'), {
+            type: 'bar',
+            data: {
+                labels: [
+                    'January', 'February', 'March', 'April', 'May', 'June',
+                    'July', 'August', 'September', 'October', 'November', 'December'
+                ],
+                datasets: [
+                    {
+                        label: 'Lengkap (%)',
+                        data: [83, 80, 84, 86, 88, 85, 86, 87, 84, 85, 86, 89],
+                        backgroundColor: '#7b003f'
+                    },
+                    {
+                        label: 'Tidak Lengkap (%)',
+                        data: [12, 15, 11, 9, 7, 10, 9, 8, 11, 10, 9, 6],
+                        backgroundColor: '#c05ab5'
+                    },
+                    {
+                        label: 'N/A (%)',
+                        data: [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
+                        backgroundColor: '#2f5fb3'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' },
+
+                    /* 🔥 ANGKA LANGSUNG TAMPIL */
+                    datalabels: {
+                        color: '#000',
+                        anchor: 'end',
+                        align: 'top',
+                        offset: -2,
+                        font: {
+                            size: 10,
+                            weight: 'bold'
+                        },
+                        formatter: (value) => value + '%'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 90,
+                        ticks: {
+                            callback: v => v + '%'
+                        }
+                    }
+                }
+            },
+            plugins: [ChartDataLabels]
+        });
+
+    </script>
+
+</body>
+
+</html>
